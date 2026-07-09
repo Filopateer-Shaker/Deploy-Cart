@@ -20,8 +20,6 @@ ingress:
 
 mongodb:
   secretName: deploycart-backend-secret
-  secretKey: mongo-uri
-  envName: MONGO_URI
 
 resources:
   requests:
