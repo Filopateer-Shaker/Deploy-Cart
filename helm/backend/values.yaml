@@ -1,16 +1,15 @@
-replicaCount: 1
+replicaCount: 2
 
 image:
-  repository: REPLACE_BACKEND_ECR_URI
-  tag: REPLACE_IMAGE_TAG
+  repository: 797601397904.dkr.ecr.us-east-1.amazonaws.com/backend
+  tag: v0.0.40
   pullPolicy: IfNotPresent
 
-containerPort: 5000
-
+containerPort: 3000
 service:
   type: ClusterIP
-  port: 5000
-  targetPort: 5000
+  port: 3000
+  targetPort: 3000
 
 ingress:
   enabled: true
@@ -19,11 +18,10 @@ ingress:
   path: /api
   pathType: Prefix
 
-mongodb:
+secret:
+  create: false
   secretName: deploycart-backend-secret
-  secretKey: mongo-uri
-  envName: MONGO_URI
-
+  
 resources:
   requests:
     cpu: 100m
@@ -34,14 +32,14 @@ resources:
 
 readinessProbe:
   enabled: true
-  path: /health
-  initialDelaySeconds: 10
+  path: /
+  initialDelaySeconds: 15
   periodSeconds: 10
 
 livenessProbe:
   enabled: true
-  path: /health
-  initialDelaySeconds: 20
+  path: /
+  initialDelaySeconds: 30
   periodSeconds: 20
 
 autoscaling:
