@@ -29,7 +29,7 @@ spec:
         - name: image.repository
           value: "797601397904.dkr.ecr.us-east-1.amazonaws.com/frontend"
         - name: image.tag
-          value: "v0.0.49"
+          value: "v0.0.53"
         - name: ingress.enabled
           value: "true"
         - name: ingress.className
