@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/Filopateer-Shaker/DeployCart.git
+    repoURL: https://github.com/Filopateer-Shaker/Deploy-Cart.git
     targetRevision: main
     path: helm/frontend
     helm:
