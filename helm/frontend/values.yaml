@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: REPLACE_FRONTEND_ECR_URI
-  tag: REPLACE_IMAGE_TAG
+  repository: 797601397904.dkr.ecr.us-east-1.amazonaws.com/frontend
+  tag: v1.0.0
   pullPolicy: IfNotPresent
 
 containerPort: 3000
