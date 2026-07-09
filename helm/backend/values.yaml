@@ -18,7 +18,6 @@ ingress:
   path: /api
   pathType: Prefix
 
-
 secret:
   create: false
   secretName: deploycart-backend-secret
@@ -32,14 +31,14 @@ resources:
     memory: 512Mi
 
 readinessProbe:
-  enabled: true
-  path: /health
+  enabled: false
+  path: /
   initialDelaySeconds: 10
   periodSeconds: 10
 
 livenessProbe:
-  enabled: true
-  path: /health
+  enabled: false
+  path: /
   initialDelaySeconds: 20
   periodSeconds: 20
 
