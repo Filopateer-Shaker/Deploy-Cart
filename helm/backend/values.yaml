@@ -18,7 +18,7 @@ ingress:
   path: /api
   pathType: Prefix
 
-mongodb:
+secret:
   secretName: deploycart-backend-secret
 
 resources:

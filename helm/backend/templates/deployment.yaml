@@ -32,7 +32,7 @@ spec:
 
           envFrom:
              - secretRef:
-                 name: {{ .Values.mongodb.secretName }}
+                 name: {{ .Values.secret.secretName }}
                 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
