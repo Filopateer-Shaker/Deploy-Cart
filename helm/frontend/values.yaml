@@ -1,16 +1,16 @@
 replicaCount: 1
 
 image:
-  repository: 797601397904.dkr.ecr.us-east-1.amazonaws.com/frontend
-  tag: v0.0.53
+  repository: REPLACE_FRONTEND_ECR_URI
+  tag: REPLACE_IMAGE_TAG
   pullPolicy: IfNotPresent
 
-containerPort: 80
+containerPort: 3000
 
 service:
   type: ClusterIP
   port: 80
-  targetPort: 80
+  targetPort: 3000
 
 ingress:
   enabled: true

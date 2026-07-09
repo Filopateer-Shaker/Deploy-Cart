@@ -12,7 +12,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Filopateer-Shaker/Deploy-Cart.git
+    repoURL: https://github.com/Filopateer-Shaker/DeployCart.git
     targetRevision: main
     path: security
   destination:

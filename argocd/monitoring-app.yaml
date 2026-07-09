@@ -20,7 +20,7 @@ spec:
       helm:
         valueFiles:
           - $values/monitoring/prometheus-values.yaml
-    - repoURL: https://github.com/Filopateer-Shaker/Deploy-Cart.git
+    - repoURL: https://github.com/Filopateer-Shaker/DeployCart.git
       targetRevision: main
       ref: values
   destination:
@@ -32,6 +32,14 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      # kube-prometheus-stack's CRDs (Prometheus, Alertmanager,
+      # AlertmanagerConfig, PrometheusAgent, etc.) are large enough that
+      # kubectl's client-side apply blows past Kubernetes' 262144-byte
+      # limit on the last-applied-configuration annotation. That failure
+      # then cascades into "no matches for kind Prometheus" because the
+      # CRD never actually got created. ServerSideApply skips that
+      # annotation entirely and is the standard fix for this chart.
+      - ServerSideApply=true
 
 ---
 # Grafana dashboards and alert rules are plain Kubernetes manifests
@@ -50,7 +58,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Filopateer-Shaker/Deploy-Cart.git
+    repoURL: https://github.com/Filopateer-Shaker/DeployCart.git
     targetRevision: main
     path: monitoring
     directory:

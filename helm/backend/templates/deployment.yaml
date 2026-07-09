@@ -30,10 +30,13 @@ spec:
               containerPort: {{ .Values.containerPort }}
               protocol: TCP
 
-          envFrom:
-             - secretRef:
-                 name: {{ .Values.secret.secretName }}
-                
+          env:
+            - name: {{ .Values.mongodb.envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mongodb.secretName }}
+                  key: {{ .Values.mongodb.secretKey }}
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
