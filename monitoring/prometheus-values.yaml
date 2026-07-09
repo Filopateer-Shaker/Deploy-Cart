@@ -1,14 +1,3 @@
-# prometheus-values.yaml
-# Helm values for the "kube-prometheus-stack" chart (prometheus-community repo).
-# Deployed via Argo CD as a Helm source pointing at this file (see argocd/monitoring-app.yaml).
-#
-# Cost-control notes (project Mandatory Cost Rules):
-# - single small node in the cluster -> every request/limit below is intentionally small
-# - no extra Load Balancers -> prometheus/alertmanager stay ClusterIP (port-forward only);
-#   Grafana is ClusterIP too, exposed at /grafana through the existing NGINX ingress
-#   controller's shared AWS Load Balancer (see monitoring/grafana-ingress.yaml) - no
-#   new LoadBalancer or custom domain needed
-# - small storage only
 
 fullnameOverride: kube-prometheus-stack
 
@@ -32,20 +21,9 @@ prometheus:
           resources:
             requests:
               storage: 8Gi
-    # Let Prometheus auto-discover ServiceMonitors/PodMonitors created by other
-    # workers (frontend/backend/mongodb apps) instead of only ones matching this
-    # Helm release's own labels.
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
-    # No additionalScrapeConfigs needed for CI anymore: GitHub Actions runs on
-    # GitHub's own SaaS runners, so there's nothing in-cluster or on our VPC
-    # to scrape for build metrics. Pipeline health is tracked instead through
-    # Argo CD's own Prometheus metrics (sync status, health status), which
-    # get auto-discovered because serviceMonitorSelectorNilUsesHelmValues is
-    # false above - as long as Worker 3 installed Argo CD with
-    # `metrics.enabled: true` / `metrics.serviceMonitor.enabled: true` in its
-    # own Helm values, no extra config is needed here.
   service:
     type: ClusterIP
 
@@ -68,18 +46,13 @@ alertmanager:
       repeat_interval: 3h
     receivers:
       - name: "null"
-    # TODO: swap the "null" receiver for a Slack/email webhook if there's time
-    # before the demo. Alerts still fire and show up in the Alertmanager UI
-    # even without a receiver configured.
+
   service:
     type: ClusterIP
 
 grafana:
   enabled: true
   replicas: 1
-  # Never commit a real password. Set at install time:
-  #   helm upgrade --install ... --set grafana.adminPassword=$GRAFANA_ADMIN_PASSWORD
-  # or better, reference a Kubernetes Secret via grafana.admin.existingSecret.
   adminPassword: ""
   defaultDashboardsEnabled: true
   resources:
@@ -95,8 +68,6 @@ grafana:
     storageClassName: gp3
   service:
     type: ClusterIP
-    # exposed externally via monitoring/grafana-ingress.yaml at /grafana
-    # (through the same AWS Load Balancer as the NGINX ingress controller)
   sidecar:
     dashboards:
       enabled: true
@@ -121,10 +92,6 @@ kubeStateMetrics:
 defaultRules:
   create: true
   rules:
-    # Turn off the heavier default rule groups (control-plane / etcd) since
-    # this is a single managed EKS node group with no self-managed etcd/API
-    # server to alert on. Our own lightweight rules live in
-    # monitoring/alerts/basic-alert-rules.yaml
     kubeApiserverAvailability: false
     kubeApiserverSlos: false
     etcd: false
