@@ -2,15 +2,15 @@ replicaCount: 1
 
 image:
   repository: 797601397904.dkr.ecr.us-east-1.amazonaws.com/frontend
-  tag: v1.0.0
+  tag: v0.0.53
   pullPolicy: IfNotPresent
 
-containerPort: 3000
+containerPort: 
 
 service:
   type: ClusterIP
   port: 80
-  targetPort: 3000
+  targetPort: 80
 
 ingress:
   enabled: true
