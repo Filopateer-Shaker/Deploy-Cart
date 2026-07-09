@@ -18,9 +18,11 @@ ingress:
   path: /api
   pathType: Prefix
 
-secret:
-  secretName: deploycart-backend-secret
 
+secret:
+  create: false
+  secretName: deploycart-backend-secret
+  
 resources:
   requests:
     cpu: 100m
